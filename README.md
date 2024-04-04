@@ -8,7 +8,7 @@ mediaflux-data-mover -download <token> ./
 tar -xf pod5_pass.tar
 ```
 
-**Note: Complete steps below if fast5 files (legacy format) are received instead of pod5**  
+_**Note: Complete steps below if fast5 files (legacy format) are received instead of pod5**_
 ```
 pod5 convert fast5 ./input/*.fast5 --output converted.pod5
 ```
