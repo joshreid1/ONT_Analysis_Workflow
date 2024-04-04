@@ -1,6 +1,6 @@
 # running-wf-human-variation  
 
-**Request pod5 files via Mediaflux Download Share (contact Josh Reid)**  
+**1) Request and download pod5 files via _Mediaflux Download Share_ (contact Josh Reid)**  
 Email will provide a token string. Run following commands in a vast scratch directory  
 ```
 module load mediaflux-data-mover
@@ -13,7 +13,7 @@ _**Note: Complete steps below if fast5 files (legacy format) are received instea
 pod5 convert fast5 ./input/*.fast5 --output converted.pod5
 ```
 
-**Basecalling (requires GPU)**  
+**2) Run Basecalling (requires GPU)**  
 _Note: Run via interactive GPU node. Recommended to run in a screen session due to long run-time. See steps below_  
 ```
 screen -S <session-name>
@@ -29,7 +29,7 @@ dorado basecaller /stornext/System/data/nvidia/dorado/models/<model version> --r
 samtools sort aligned.bam > sorted.bam
 ```
 
-**Running wf-human-variation**  
+**3) Run wf-human-variation**  
 ```
 /stornext/System/data/tools/nextflow/nextflow-23.04.2/nextflow-23.04.2-all run /home/users/allstaff/reid.j/bahlo_reidj/analysis/wehi-wf-human-variation/wehi-wf-human-variation -profile apptainer -w /vast/scratch/users/reid.j/wf-human-variation/workspace --snp --sv --str --cnv --bam <sorted.bam> --ref /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna --sample_name <sample id_model version> -with-report --basecaller_cfg <insert version> --bam_min_coverage 5 -resume
 ```
