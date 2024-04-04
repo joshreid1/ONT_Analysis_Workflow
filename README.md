@@ -5,6 +5,7 @@ Email will provide a token string. Run following commands in a vast scratch dire
 ```
 module load mediaflux-data-mover
 mediaflux-data-mover -download <token> ./
+tar -xf pod5_pass.tar
 ```
 
 **Note: Complete steps below if fast5 files (legacy format) are received instead of pod5**  
@@ -17,7 +18,7 @@ pod5 convert fast5 ./input/*.fast5 --output converted.pod5
 screen -S <session-name>
 srun --partition=gpuq -n1 -c6 --mem=100GB --gres=gpu:A30:1 --pty bash
 module load dorado/0.5.2
-dorado basecaller /stornext/System/data/nvidia/dorado/models/<model version>dna_r9.4.1_e8_sup@v3.6 --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <pod5> > <sample id_model version_aligned>.bam
+dorado basecaller /stornext/System/data/nvidia/dorado/models/<model version>dna_r9.4.1_e8_sup@v3.6 --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <pod5_pass> > <sample id_model version_aligned>.bam
 samtools sort aligned.bam > sorted.bam
 ```
 
