@@ -1,7 +1,7 @@
 # running-wf-human-variation
 
-**Request pod5 files via Mediaflux Download Share (contact Josh Reid)**
-Email will provide a token string. Run following commands in a vast scratch directory 
+**Request pod5 files via Mediaflux Download Share (contact Josh Reid)** \n
+Email will provide a token string. Run following commands in a vast scratch directory \n
 ```
 module load mediaflux-data-mover
 mediaflux-data-mover -download <token> ./
