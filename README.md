@@ -14,15 +14,15 @@ pod5 convert fast5 ./input/*.fast5 --output converted.pod5
 ```
 
 **Basecalling (requires GPU)**  
-_Note: Run via interactive GPU node. Recommended to run in a screen session due to long run-time. See steps below_
+_Note: Run via interactive GPU node. Recommended to run in a screen session due to long run-time. See steps below_  
 ```
 screen -S <session-name>
 srun --partition=gpuq -n1 -c6 --mem=100GB --gres=gpu:A30:1 --pty bash
 ```
-_See [Dorado](https://github.com/nanoporetech/dorado?tab=readme-ov-file#dna-models) link for available DNA models_
-> Current sup models (as at 04/04/2024):
-> LSK114 = dna_r10.4.1_e8.2_400bps_sup@v4.3.0
-> LSK110 = dna_r9.4.1_e8_sup@v3.6
+_See [Dorado](https://github.com/nanoporetech/dorado?tab=readme-ov-file#dna-models) link for available DNA models_  
+> Current sup models (as at 04/04/2024):  
+> LSK114 = dna_r10.4.1_e8.2_400bps_sup@v4.3.0  
+> LSK110 = dna_r9.4.1_e8_sup@v3.6  
 ```
 module load dorado/0.5.2
 dorado basecaller /stornext/System/data/nvidia/dorado/models/<model version> --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <pod5_pass> > <sample id_model version_aligned>.bam
