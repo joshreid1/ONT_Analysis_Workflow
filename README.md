@@ -5,7 +5,8 @@ Email will provide a token string. Run following commands in a vast scratch dire
 ```
 module load mediaflux-data-mover
 mediaflux-data-mover -download <token> ./
-tar -xf pod5_pass.tar
+jar xf pod5.zip
+tar -xf pod5/pod5_pass.tar
 ```
 
 _**Note: Complete steps below if fast5 files (legacy format) are received instead of pod5**_
