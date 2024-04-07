@@ -29,6 +29,8 @@ module load dorado/0.5.2
 dorado basecaller /stornext/System/data/nvidia/dorado/models/<model version> --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <pod5_pass> > <sample id_model version_aligned>.bam
 samtools sort aligned.bam > sorted.bam
 ```
+  
+_Note: If basecalling is interrupted, command can be resumed by adding ```--resume-from <incomplete.bam>``` command_
 
 **3) Run wf-human-variation**  
 ```
