@@ -39,7 +39,15 @@ _Note: If basecalling is interrupted, command can be resumed by adding ```--resu
 
 
 **Common Issues:**  
-apptainer pull  
+> apptainer pull unsuccessful inside Nextflow
+```
+apptainer pull /vast/scratch/users/reid.j/nextflow/singularity_cache/ontresearch-wf-human-variation-snp-sha0d7e7e8e8207d9d23fdf50a34ceb577da364373e.img docker://ontresearch/wf-human-variation-snp:sha0d7e7e8e8207d9d23fdf50a34ceb577da364373e
+apptainer pull /vast/scratch/users/reid.j/nextflow/singularity_cache/ontresearch-wf-cnv-sha428cb19e51370020ccf29ec2af4eead44c6a17c2.img docker://ontresearch/wf-cnv:sha428cb19e51370020ccf29ec2af4eead44c6a17c2
+apptainer pull /vast/scratch/users/reid.j/nextflow/singularity_cache/ontresearch-wf-human-variation-str-sha28799bc3058fa256c01c1f07c87f04e4ade1fcc1.img docker://ontresearch/wf-human-variation-str:sha28799bc3058fa256c01c1f07c87f04e4ade1fcc1
+apptainer pull /vast/scratch/users/reid.j/nextflow/singularity_cache/ontresearch-wf-human-variation-sha0800eade05e4cbb75d45421633c78c4f6320b2f6.img docker://ontresearch/wf-human-variation:sha0800eade05e4cbb75d45421633c78c4f6320b2f6
+apptainer pull /vast/scratch/users/reid.j/nextflow/singularity_cache/ontresearch-wf-human-variation-sv-shabc3ac908a14705f248cdf49f218956ec33e93ef9.img docker://ontresearch/wf-human-variation-sv:shabc3ac908a14705f248cdf49f218956ec33e93ef9
+```
+
 
 bam_ingress:minimap2_alignment  
 samtools sort: truncated file. Aborting  
