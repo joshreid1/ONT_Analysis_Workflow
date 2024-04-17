@@ -27,7 +27,7 @@ _See [Dorado](https://github.com/nanoporetech/dorado?tab=readme-ov-file#dna-mode
 > LSK110 = dna_r9.4.1_e8_sup@v3.6  
 ```
 module load dorado/0.5.2
-dorado basecaller /stornext/System/data/nvidia/dorado/models/<model version> --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <pod5_pass> > <sample id_model version_aligned>.bam
+dorado basecaller sup,5mC_5hmC,6mA --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <pod5_pass> > <sample id_model version_aligned>.bam
 samtools sort aligned.bam > sorted.bam
 ```
   
