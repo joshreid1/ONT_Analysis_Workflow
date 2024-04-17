@@ -18,7 +18,8 @@ pod5 convert fast5 ./input/*.fast5 --output converted.pod5
 _Note: Run via interactive GPU node. Recommended to run in a screen session due to long run-time. See steps below_  
 ```
 screen -S <session-name>
-srun --partition=gpuq -n1 -c6 --mem=100GB --gres=gpu:A30:1 --pty bash
+srun --partition=gpuq -n1 -c10 --mem=200GB --gres=gpu:A30:1 --pty bash
+#srun --partition=gpuq -n1 -c6 --mem=100GB --gres=gpu:A30:1 --pty bash
 ```
 _See [Dorado](https://github.com/nanoporetech/dorado?tab=readme-ov-file#dna-models) link for available DNA models_  
 > Current sup models (as at 04/04/2024):  
