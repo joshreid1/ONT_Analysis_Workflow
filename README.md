@@ -18,8 +18,7 @@ pod5 convert fast5 ./input/*.fast5 --output converted.pod5
 _Note: Run via interactive GPU node. Recommended to run in a screen session due to long run-time. See steps below_  
 ```
 screen -S <session-name>
-srun --partition=gpuq -n1 -c10 --mem=200GB --gres=gpu:A30:1 --pty bash
-#srun --partition=gpuq -n1 -c6 --mem=100GB --gres=gpu:A30:1 --pty bash
+srun --partition=gpuq -n1 -c12 --mem=64GB --gres=gpu:A30:1 --pty bash
 ```
 _See [Dorado](https://github.com/nanoporetech/dorado?tab=readme-ov-file#dna-models) link for available DNA models_  
 > Current sup models (as at 04/04/2024):  
@@ -35,7 +34,7 @@ _Note: If basecalling is interrupted, command can be resumed by adding ```--resu
 
 **3) Run wf-human-variation**  
 ```
-/stornext/System/data/tools/nextflow/nextflow-23.04.2/nextflow-23.04.2-all run /home/users/allstaff/reid.j/bahlo_reidj/analysis/wehi-wf-human-variation/wehi-wf-human-variation -profile apptainer -w /vast/scratch/users/reid.j/wf-human-variation/workspace --snp --sv --str --cnv --bam <sorted.bam> --ref /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna --sample_name <sample id_model version> -with-report --basecaller_cfg <insert version> --bam_min_coverage 5 -resume
+/stornext/System/data/tools/nextflow/nextflow-23.04.2/nextflow-23.04.2-all run /home/users/allstaff/reid.j/bahlo_reidj/analysis/wehi-wf-human-variation/wehi-wf-human-variation -profile apptainer -w /vast/scratch/users/reid.j/wf-human-variation/workspace --snp --sv --str --cnv --mod --bam <sorted.bam> --ref /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna --sample_name <sample id_model version> -with-report --basecaller_cfg <insert version> --bam_min_coverage 5 -resume
 ```
 
 
