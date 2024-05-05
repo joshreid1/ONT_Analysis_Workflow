@@ -47,6 +47,7 @@ apptainer pull /vast/scratch/users/reid.j/nextflow/singularity_cache/ontresearch
 apptainer pull /vast/scratch/users/reid.j/nextflow/singularity_cache/ontresearch-wf-human-variation-sha0800eade05e4cbb75d45421633c78c4f6320b2f6.img docker://ontresearch/wf-human-variation:sha0800eade05e4cbb75d45421633c78c4f6320b2f6
 apptainer pull /vast/scratch/users/reid.j/nextflow/singularity_cache/ontresearch-wf-human-variation-sv-shabc3ac908a14705f248cdf49f218956ec33e93ef9.img docker://ontresearch/wf-human-variation-sv:shabc3ac908a14705f248cdf49f218956ec33e93ef9
 apptainer pull /vast/scratch/users/reid.j/nextflow/singularity_cache/ontresearch-wf-common-sha0a6dc21fac17291f4acb2e0f67bcdec7bf63e6b7.img docker://ontresearch/wf-common:sha0a6dc21fac17291f4acb2e0f67bcdec7bf63e6b7
+apptainer pull /vast/scratch/users/reid.j/nextflow/singularity_cache/ontresearch-snpeff-sha4f289afaf754c7a3e0b9ffb6c0b5be0f89a5cf04.img docker://ontresearch/snpeff:sha4f289afaf754c7a3e0b9ffb6c0b5be0f89a5cf04
 ```
 
 
