@@ -59,7 +59,3 @@ Increase process memory!
 
 
 
-# running nf-core sarek  
-```
-/stornext/System/data/tools/nextflow/nextflow-23.10.0/nextflow-23.10.0-all run nf-core/sarek -revision 3.4.0 -profile wehi --tools freebayes,mutect2,strelka,manta,cnvkit,mpileup,deepvariant --outdir ./BGI_240222 --input /stornext/Bioinf/data/lab_bahlo/users/reid.j/nf-sarek/20240222_bgi_wes.csv  --fasta /stornext/Bioinf/data/lab_bahlo/projects/epilepsy/hg38/reference/fasta/Homo_sapiens_assembly38.fasta --wes --email joshua.reid@unimelb.edu.au -c custom.config --save_mapped --save_output_as_bam --joint_mutect2 -c /stornext/Bioinf/data/lab_bahlo/users/reid.j/nf-sarek/amazon.config -resume
-```
