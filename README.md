@@ -21,12 +21,12 @@ screen -S <session-name>
 srun --partition=gpuq -n1 -c12 --mem=64GB --gres=gpu:A30:1 --pty bash
 ```
 _See [Dorado](https://github.com/nanoporetech/dorado?tab=readme-ov-file#dna-models) link for available DNA models_  
-> Current sup models (as at 04/04/2024):  
-> LSK114 = dna_r10.4.1_e8.2_400bps_sup@v4.3.0  
+> Current sup models (as at 03/06/2024):  
+> LSK114 = dna_r10.4.1_e8.2_400bps_sup@v5.0.0
 > LSK110 = dna_r9.4.1_e8_sup@v3.6  
 ```
-module load dorado/0.5.2
-dorado basecaller sup,5mC_5hmC,6mA --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <pod5_pass> > <sample id_model version_aligned>.bam
+module load dorado/0.7.0
+dorado basecaller sup,5mC_5hmC --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <pod5_pass> > <sample-id_model_version_aligned>.bam
 samtools sort aligned.bam > sorted.bam
 ```
   
