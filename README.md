@@ -8,6 +8,8 @@ mediaflux-data-mover -download <token> ./
 jar xf pod5.zip
 tar -xf pod5/pod5_pass.tar
 ```
+_**Note: Request all pod5 files (pass, fail and recovered (if applicable) when rebasecalling is required)**_ 
+
 
 _**Note: Complete steps below if fast5 files (legacy format) are received instead of pod5**_
 ```
@@ -18,7 +20,7 @@ pod5 convert fast5 ./input/*.fast5 --output converted.pod5
 _Note: Run via interactive GPU node. Recommended to run in a screen session due to long run-time. See steps below_  
 ```
 screen -S <session-name>
-srun --partition=gpuq -n1 -c12 --mem=64GB --gres=gpu:A30:1 --pty bash
+srun --partition=gpuq -n1 -c6 --mem=64GB --gres=gpu:A30:3 --job-name=<job-name> --pty bash
 ```
 _See [Dorado](https://github.com/nanoporetech/dorado?tab=readme-ov-file#dna-models) link for available DNA models_  
 > Current sup models (as at 03/06/2024):  
