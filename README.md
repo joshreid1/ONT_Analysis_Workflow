@@ -17,20 +17,32 @@ pod5 convert fast5 ./input/*.fast5 --output converted.pod5
 ```
 
 **2) Run Basecalling (requires GPU)**  
-_Note: Run via interactive GPU node. Recommended to run in a screen session due to long run-time. See steps below_  
+_Note: Run in a screen session due to long run-time._  
 ```
-screen -S <session-name>
-srun --partition=gpuq -n1 -c6 --mem=64GB --gres=gpu:A30:3 --job-name=<job-name> --pty bash
+screen -S <sample_gpu>
 ```
+Submit bash script below:
+```
+#!/bin/bash
+#SBATCH --partition gpuq     # submit to the gpuq partition
+#SBATCH --cpus-per-task 6   # request 6 CPUs
+#SBATCH --mem 64G         # request 64GB
+#SBATCH --gres gpu:A30:4     # requesting 4 x A30 GPU
+#SBATCH --job-name <sample_basecalling>
+
+module load dorado/0.7.0
+
+dorado basecaller /stornext/System/data/nvidia/dorado/models/dna_r10.4.1_e8.2_400bps_sup@v5.0.0 \
+--modified-bases 5mC_5hmC --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna \
+./path_to_all_pod5 > <sample>_sup_v5.0.0_5mC_5hmC_aligned.bam
+
+samtools sort -@ 6 -o <sample>_sup_v5.0.0_5mC_5hmC_sorted.bam <sample>_sup_v5.0.0_5mC_5hmC_aligned.bam
+```
+
 _See [Dorado](https://github.com/nanoporetech/dorado?tab=readme-ov-file#dna-models) link for available DNA models_  
 > Current sup models (as at 03/06/2024):  
 > LSK114 = dna_r10.4.1_e8.2_400bps_sup@v5.0.0
 > LSK110 = dna_r9.4.1_e8_sup@v3.6  
-```
-module load dorado/0.7.0
-dorado basecaller sup,5mC_5hmC --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <pod5_pass> > <sample-id_model_version_aligned>.bam
-samtools sort aligned.bam > sorted.bam
-```
   
 _Note: If basecalling is interrupted, command can be resumed by adding ```--resume-from <incomplete.bam>``` command_
 
