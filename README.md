@@ -63,11 +63,9 @@ Submit bash script below:
 
 module load dorado/0.7.0
 
-dorado aligner /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <bam_pass/> -o test
+samtools merge -@6 bam_pass/*bam -o <sample>_sup_v5.0.0_5mC_5hmC_unaligned.bam
 
-dorado basecaller /stornext/System/data/nvidia/dorado/models/dna_r10.4.1_e8.2_400bps_sup@v5.0.0 \
---modified-bases 5mC_5hmC --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna \
-./path_to_all_pod5 > <sample>_sup_v5.0.0_5mC_5hmC_aligned.bam
+dorado aligner /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <sample>_sup_v5.0.0_5mC_5hmC_unaligned.bam > <sample>_sup_v5.0.0_5mC_5hmC_aligned.bam
 
 samtools sort -@ 6 -o <sample>_sup_v5.0.0_5mC_5hmC_sorted.bam <sample>_sup_v5.0.0_5mC_5hmC_aligned.bam
 ```
