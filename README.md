@@ -3,17 +3,15 @@ Start point =
 A) Raw pod5 files (basecalling required)
 B) Basecalled bam files (alignment required)
 
-_Please note: The P2i does not run the most up to date version of Dorado. Therefore, standalone Dorado basecalling recommended over live basecalling output_  
+_Please note: The P2i does not run the most up to date version of Dorado. Therefore, standalone Dorado basecalling on HPC (start point A) recommended over proceeding with live basecalling output (start point B)_  
 
 **1) Request and download files via _Mediaflux Download Share_ (contact Josh Reid)**  
 Email will provide a token string. Run following commands in a vast scratch directory  
 ```
 module load mediaflux-data-mover
 mediaflux-data-mover -download <token> ./
-jar xf pod5.zip
-tar -xf pod5/pod5_pass.tar
 ```
-_**Note: Request all pod5 files (pass, fail and recovered (if applicable) when rebasecalling is required)**_ 
+_**Note: Request all pod5 files (pass, fail and recovered (if applicable) when basecalling)**_ 
 
 _**Note: Complete steps below if fast5 files (legacy format) are received instead of pod5**_
 ```
@@ -21,16 +19,12 @@ pod5 convert fast5 ./input/*.fast5 --output converted.pod5
 ```
 
 **2) Dorado (requires GPU)**
-
 _See [Dorado](https://github.com/nanoporetech/dorado?tab=readme-ov-file#dna-models) link for available DNA models_  
 > Current sup models (as at 03/06/2024):  
 > LSK114 = dna_r10.4.1_e8.2_400bps_sup@v5.0.0
 > LSK110 = dna_r9.4.1_e8_sup@v3.6  
 
-_Note: Run in a screen session due to long run-time._  
-```
-screen -S <sample_gpu>
-```
+
 _Option A: Run Basecalling_
 
 Submit bash script below:
@@ -74,6 +68,9 @@ samtools sort -@ 6 -o <sample>_sup_v5.0.0_5mC_5hmC_sorted.bam <sample>_sup_v5.0.
 
 **3) Run wf-human-variation**  
 ```
+UPDATE:
+nextflow run epi2me-labs/wf-human-variation -r v2.2.5 -c nextflow-config/milton.config -w ./work --snp --sv --str --cnv --mod --phased --bam <sorted.bam> --ref /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna --sample_name <sample id_model version> -with-report -resume
+
 /stornext/System/data/tools/nextflow/nextflow-23.04.2/nextflow-23.04.2-all run /home/users/allstaff/reid.j/bahlo_reidj/analysis/wehi-wf-human-variation/wehi-wf-human-variation -profile apptainer -w /vast/scratch/users/reid.j/wf-human-variation/workspace --snp --sv --str --cnv --mod --phased --bam <sorted.bam> --ref /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna --sample_name <sample id_model version> -with-report --basecaller_cfg dna_r10.4.1_e8.2_400bps_sup@v4.1.0 --bam_min_coverage 5 -resume
 ```
 
