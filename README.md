@@ -3,6 +3,8 @@ Start point =
 A) Raw pod5 files (basecalling required)
 B) Basecalled bam files (alignment required)
 
+_Please note: The P2i does not run the most up to date version of Dorado. Therefore, standalone Dorado basecalling recommended over live basecalling output_  
+
 **1) Request and download files via _Mediaflux Download Share_ (contact Josh Reid)**  
 Email will provide a token string. Run following commands in a vast scratch directory  
 ```
