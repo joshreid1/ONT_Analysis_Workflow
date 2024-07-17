@@ -24,6 +24,7 @@ _See [Dorado](https://github.com/nanoporetech/dorado?tab=readme-ov-file#dna-mode
 > LSK114 = dna_r10.4.1_e8.2_400bps_sup@v5.0.0
 > LSK110 = dna_r9.4.1_e8_sup@v3.6  
 
+_Note: See [link here](https://lh3.github.io/2017/11/13/which-human-reference-genome-to-use) for notes on recommended reference sequence_
 
 _Option A: Run Basecalling_
 
