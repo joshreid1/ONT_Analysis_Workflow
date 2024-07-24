@@ -45,6 +45,10 @@ dorado basecaller /stornext/System/data/nvidia/dorado/models/dna_r10.4.1_e8.2_40
 
 samtools sort -@ 6 -o <sample>_sup_v5.0.0_5mC_5hmC_sorted.bam <sample>_sup_v5.0.0_5mC_5hmC_aligned.bam
 ```
+_Note: Approx realtime for basecalling:_
+- 5mC_5hmC (all methylated C's_ ~80 hours
+- 5mCG_5hmCG (methylated 'CG' C's only) ~40 hours
+
 _Note: If basecalling is interrupted, command can be resumed by adding ```--resume-from <incomplete.bam>``` command_
 
 _Option B: Run alignment_
