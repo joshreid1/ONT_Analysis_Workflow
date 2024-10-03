@@ -95,5 +95,12 @@ Increase process memory!
 
 >samtools sort: truncated file. Aborting
 
+**4) Additional structural variant annotation
+```
+conda activate svafotate-env
+annotate --vcf <input.wf_sv.vcf.gz> --target <240606_Genes4Epilepsy_v2024-03.bed> --out <output.vcf> -b <SVAFotate_core_SV_popAFs.GRCh38.v4.1.bed.gz>
+```
+
+
 
 
