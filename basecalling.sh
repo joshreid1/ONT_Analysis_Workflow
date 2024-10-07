@@ -5,7 +5,7 @@
 #SBATCH --gres gpu:A30:4     # requesting 4 x A30 GPU
 #SBATCH --job-name <sample_basecalling>
 
-module load dorado/0.7.0
+module load dorado/0.7.3
 
 dorado basecaller /stornext/System/data/nvidia/dorado/models/dna_r10.4.1_e8.2_400bps_sup@v5.0.0 \
 --modified-bases 5mCG_5hmCG --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna \
