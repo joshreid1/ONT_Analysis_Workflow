@@ -49,6 +49,8 @@ _Note: Approx real runtime for basecalling:_
 - 5mC_5hmC (all methylated C's_ ~80 hours
 - 5mCG_5hmCG (methylated 'CG' C's only) ~40 hours
 
+- ###TODO: ADD --min-qscore <value> flag
+
 _Note: 4 x A30 GPUs requested per job. 8 total available per user at once (i.e. 2 samples can be run simultaneuously)_
 
 _Note: If basecalling is interrupted, command can be resumed by adding ```--resume-from <incomplete.bam>``` command_
