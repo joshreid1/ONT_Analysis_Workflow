@@ -9,7 +9,7 @@ _Please note: The P2i does not run the most up to date version of Dorado. Theref
 Email will provide a token string. Run following commands in a vast scratch directory  
 ```
 module load mediaflux-data-mover
-mediaflux-data-mover -download <token> ./
+mediaflux-data-mover -download -exists skip <token> ./
 ```
 _**Note: Request all pod5 files (pass, fail and recovered (if applicable) when basecalling)**_ 
 
