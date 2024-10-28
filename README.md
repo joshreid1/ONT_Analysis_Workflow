@@ -81,7 +81,7 @@ _See details [here](https://github.com/epi2me-labs/wf-human-variation)_
 https://github.com/epi2me-labs/wf-human-variation/releases
 ```
 UPDATE:
-nextflow run epi2me-labs/wf-human-variation -r v2.2.5 -c nextflow-config/milton.config -w ./work --snp --sv --str --cnv --mod --phased --bam <sorted.bam> --ref /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna --sample_name <sample id_model version> -with-report -resume
+nextflow run epi2me-labs/wf-human-variation -r v2.2.5 -c nextflow-config/milton.config -w ./work --snp --sv --str --cnv --mod --phased --bam <sorted.bam> --ref /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna --sample_name <sample id_model version> -with-report --bam_min_coverage N -resume
 ```
 
 **Common Issues:**  
@@ -104,7 +104,8 @@ Increase process memory!
 **4) Additional structural variant annotation
 ```
 conda activate svafotate-env
-annotate --vcf <input.wf_sv.vcf.gz> --target <240606_Genes4Epilepsy_v2024-03.bed> --out <output.vcf> -b <SVAFotate_core_SV_popAFs.GRCh38.v4.1.bed.gz>
+svafotate annotate --vcf <input.wf_sv.vcf.gz> --target /vast/projects/reidj-project/Genes4Epilepsy/EpilepsyGenes_NamesOnly_v2024-09.bed --out <output.vcf> \
+-b /vast/projects/reidj-project/software/SVAFotate/svafotate_data/SVAFotate_core_SV_popAFs.GRCh38.v4.1.bed.gz
 ```
 
 
