@@ -39,7 +39,7 @@ Submit bash script below:
 
 module load dorado/0.7.0
 
-dorado basecaller /stornext/System/data/nvidia/dorado/models/dna_r10.4.1_e8.2_400bps_sup@v5.0.0 \
+dorado basecaller /stornext/System/data/nvidia/dorado/models/dna_r10.4.1_e8.2_400bps_sup@v5.0.0 --min-qscore 10 \
 --modified-bases 5mCG_5hmCG --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna \
 ./path_to_all_pod5 > <sample>_sup_v5.0.0_5mCG_5hmCG_aligned.bam
 
@@ -48,8 +48,6 @@ samtools sort -@ 6 -o <sample>_sup_v5.0.0_5mCG_5hmCG_sorted.bam <sample>_sup_v5.
 _Note: Approx real runtime for basecalling:_
 - 5mC_5hmC (all methylated C's_ ~80 hours
 - 5mCG_5hmCG (methylated 'CG' C's only) ~40 hours
-
-- ###TODO: ADD --min-qscore <value> flag
 
 _Note: 4 x A30 GPUs requested per job. 8 total available per user at once (i.e. 2 samples can be run simultaneuously)_
 
