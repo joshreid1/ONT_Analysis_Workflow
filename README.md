@@ -37,13 +37,11 @@ Submit bash script below:
 #SBATCH --gres gpu:A30:4     # requesting 4 x A30 GPU
 #SBATCH --job-name <sample_basecalling>
 
-module load dorado/0.7.0
+module load dorado
 
 dorado basecaller /stornext/System/data/nvidia/dorado/models/dna_r10.4.1_e8.2_400bps_sup@v5.0.0 --min-qscore 10 \
 --modified-bases 5mCG_5hmCG --reference /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna \
 ./path_to_all_pod5 > <sample>_sup_v5.0.0_5mCG_5hmCG_aligned.bam
-
-samtools sort -@ 6 -o <sample>_sup_v5.0.0_5mCG_5hmCG_sorted.bam <sample>_sup_v5.0.0_5mCG_5hmCG_aligned.bam
 ```
 _Note: Approx real runtime for basecalling:_
 - 5mC_5hmC (all methylated C's_ ~80 hours
@@ -64,21 +62,27 @@ Submit bash script below:
 #SBATCH --gres gpu:A30:4     # requesting 4 x A30 GPU
 #SBATCH --job-name <sample_alignment>
 
-module load dorado/0.7.3
+module load dorado
 
-samtools merge -@6 bam_pass/*bam -o <sample>_sup_v5.0.0_5mC_5hmC_unaligned.bam
+samtools merge -@6 bam_pass/*bam -o <sample>_sup_v5.0.0_5mCG_5hmCG_unaligned.bam
 
-dorado aligner /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <sample>_sup_v5.0.0_5mC_5hmC_unaligned.bam > <sample>_sup_v5.0.0_5mC_5hmC_aligned.bam
-
-samtools sort -@ 6 -o <sample>_sup_v5.0.0_5mC_5hmC_sorted.bam <sample>_sup_v5.0.0_5mC_5hmC_aligned.bam
+dorado aligner /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <sample>_sup_v5.0.0_5mCG_5hmCG_unaligned.bam > <sample>_sup_v5.0.0_5mCG_5hmCG_aligned.bam
 ```
+
+
 
 **3) Run epi2me wf-human-variation**  
 _See details [here](https://github.com/epi2me-labs/wf-human-variation)_
 
 https://github.com/epi2me-labs/wf-human-variation/releases
 ```
-UPDATE:
+#!/bin/bash
+#SBATCH --cpus-per-task 6   # request 6 CPUs
+#SBATCH --mem 64G         # request 64GB
+#SBATCH --job-name epi2me
+
+samtools sort -@ 6 -o <sample>_sup_v5.0.0_5mCG_5hmCG_sorted.bam <sample>_sup_v5.0.0_5mCG_5hmCG_aligned.bam
+
 nextflow run epi2me-labs/wf-human-variation -r v2.6.0 -c /vast/projects/reidj-project/nextflow-config/epi2me.config -w ./work --snp --sv --str --cnv --mod --phased --bam <sorted.bam> --ref /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna --sample_name <sample_name> -with-report --bam_min_coverage 5 -resume
 ```
 
