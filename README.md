@@ -56,10 +56,8 @@ _Option B: Run alignment_
 Submit bash script below:
 ```
 #!/bin/bash
-#SBATCH --partition gpuq     # submit to the gpuq partition
 #SBATCH --cpus-per-task 6   # request 6 CPUs
 #SBATCH --mem 64G         # request 64GB
-#SBATCH --gres gpu:A30:4     # requesting 4 x A30 GPU
 #SBATCH --job-name <sample_alignment>
 
 module load dorado
@@ -69,7 +67,7 @@ samtools merge -@6 bam_pass/*bam -o <sample>_sup_v5.0.0_5mCG_5hmCG_unaligned.bam
 dorado aligner /vast/projects/bahlo_epilepsy/ref_genomes/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna <sample>_sup_v5.0.0_5mCG_5hmCG_unaligned.bam > <sample>_sup_v5.0.0_5mCG_5hmCG_aligned.bam
 ```
 
-
+Note: Alignment only does not require GPU
 
 **3) Run epi2me wf-human-variation**  
 _See details [here](https://github.com/epi2me-labs/wf-human-variation)_
