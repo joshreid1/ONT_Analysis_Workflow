@@ -1,4 +1,4 @@
-# running-wf-human-variation  
+# ONT Analysis Workflow  
 Start point = 
 A) Raw pod5 files (basecalling required)
 B) Basecalled bam files (alignment required)
