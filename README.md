@@ -188,3 +188,12 @@ process {
 
 - epi2me wf-human-variation: https://github.com/epi2me-labs/wf-human-variation
 - Dorado models: https://software-docs.nanoporetech.com/dorado/latest/models/list/
+
+
+
+TOADD: 
+1. Common use cases
+- Variant phasing
+- Translocation detection
+- Methylation analysis
+
