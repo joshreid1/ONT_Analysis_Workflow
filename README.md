@@ -214,29 +214,29 @@ Output files are prefixed with `<sample_name>`. Each subworkflow produces distin
 
 Visualising phased variants in IGV:
 
-i. Load haplotagged BAM/CRAM (i.e. `HP` and `PS` tags have been added by WhatsHap)
-ii. Navigate to gene/region of interest
-iii. Highlight variants of interest (via 'Define a region of interest')
-iv. "Group alignments by" → phase (i.e. `HP` haplotype tag)
-v. "Color alignments by" → tag → `PS` (phase set — contiguous block over which variants are jointly phased)
+1. Load haplotagged BAM/CRAM (i.e. `HP` and `PS` tags have been added by WhatsHap)
+2. Navigate to gene/region of interest
+3. Highlight variants of interest (via 'Define a region of interest')
+4. "Group alignments by" → phase (i.e. `HP` haplotype tag)
+5. "Color alignments by" → tag → `PS` (phase set — contiguous block over which variants are jointly phased)
 
 ## 2) Translocation detection
 
 Visualising translocations (i.e. `BND` events called by Sniffles2) in IGV:
 
-i. Load BAM/CRAM
-ii. Navigate to translocation breakpoint (e.g. via "Go to" → `chr1:12345`)
-iii. Click on a read supporting the translocation and view: a) 'Supplementary alignments' b) Clipping
-iv. "Group alignments by" → "Chimeric"
-v. Right click on chimeric read → "Supplementary Reads Diagram" to view a schematic of the translocation event
-vi. Right click on chimeric read → "View chimeric alignments in split screen"
+1. Load BAM/CRAM
+2. Navigate to translocation breakpoint (e.g. via "Go to" → `chr1:12345`)
+3. Click on a read supporting the translocation and view: a) 'Supplementary alignments' b) Clipping
+4. "Group alignments by" → "Chimeric"
+5. Right click on chimeric read → "Supplementary Reads Diagram" to view a schematic of the translocation event
+6. Right click on chimeric read → "View chimeric alignments in split screen"
 
 ## 3) Methylation analysis
 
-i. Load BAM/CRAM (must have `MM`/`ML` tags from Dorado basecalling with a modified-base model)
-ii. Navigate to gene/region of interest
-iii. "Color alignments by" → "Base modification 2 color (all)": blue = unmodified, red = modified (opacity = confidence of call)
-iv. Click on a histogram bar to see breakdown of methylation calls at that position
+1. Load BAM/CRAM (must have `MM`/`ML` tags from Dorado basecalling with a modified-base model)
+2. Navigate to gene/region of interest
+3. "Color alignments by" → "Base modification 2 color (all)": blue = unmodified, red = modified (opacity = confidence of call)
+4. Click on a histogram bar to see breakdown of methylation calls at that position
 
 Load CpG island annotations:
 
