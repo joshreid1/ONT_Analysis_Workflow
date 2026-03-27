@@ -242,11 +242,13 @@ Load CpG island annotations:
 
 **File → Load track from URL →** `https://data.broadinstitute.org/igvdata/annotations/hg38/cpgIslandExt.bed.gz`
 
+Example methylation analysis scripts are available in the `methylation_scripts/` directory of this repo. These include:
+- `methylation_compare.R`: Compare methylation profiles between two samples, including pathway enrichment analysis of differentially methylated genes.
+
+
+
 > **IGV tip:** Enable "Hide Small Indels" (e.g. <5bp) to reduce noise in screenshots.
 
-<!-- TODO: Add IGV guidance for STR expansion visualisation (loading wf_str.vcf.gz alongside haplotagged CRAM) -->
-<!-- TODO: Add guidance for visualising bedMethyl files and bigWig tracks in IGV or genome browsers (e.g. UCSC) -->
-<!-- TODO: Add use case for CNV visualisation using the wf-human-cnv-report.html or external genome browsers -->
 
 ---
 

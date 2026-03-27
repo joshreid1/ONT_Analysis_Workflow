@@ -232,7 +232,7 @@ methylation_linear_correlation <- function(
 
     # Plot
     if (plot_main) {
-      plotfile <- sprintf("linear_comparison_%s_vs_%s_%s.png", sample_a_name, sample_b_name, region_id)
+      plotfile <- file.path(outdir, sprintf("linear_comparison_%s_vs_%s_%s.png", sample_a_name, sample_b_name, region_id))
       png(plotfile, width = 1800, height = 1600, res = 300)
       plot_data <- merged_means %>%
       filter(
@@ -434,7 +434,7 @@ parallel_compare_methylation <- function(
     fdr_threshold = 0.05, max_gap = 100, no_plot = TRUE,
     add_promotor = TRUE,
     n_cores = 20,
-    log_file = "parallel_compare_methylation.log"
+    log_file = file.path(outdir, "parallel_compare_methylation.log")
 ) {
   
   log_msg <- function(...) {
@@ -495,6 +495,12 @@ parallel_compare_methylation <- function(
   results_list <- Filter(Negate(is.null), results_list)
   
   all_combined <- dplyr::bind_rows(results_list)
+  
+  # Remove duplicate clusters (same chrom, start, end) - keep first gene encountered
+  all_combined <- all_combined %>%
+    dplyr::group_by(chrom, start, end) %>%
+    dplyr::slice(1) %>%
+    dplyr::ungroup()
   
   log_msg("Adjusting p-values for ", nrow(all_combined), " total clusters")
   
@@ -569,8 +575,8 @@ if (nrow(result_sig) > 0) {
 # ---- Volcano Plot ----
 
 # Define plot paths
-plotfile_annotated <- paste0("volcano_plot_", sample_a_name, "_vs_", sample_b_name, ".png")
-plotfile_unannotated <- paste0("volcano_plot_", sample_a_name, "_vs_", sample_b_name, "_unannotated.png")
+plotfile_annotated <- file.path(outdir, paste0("volcano_plot_", sample_a_name, "_vs_", sample_b_name, ".png"))
+plotfile_unannotated <- file.path(outdir, paste0("volcano_plot_", sample_a_name, "_vs_", sample_b_name, "_unannotated.png"))
 
 # Label top hits from all tested clusters
 top_hits <- result_all %>%
@@ -669,7 +675,7 @@ dev.off()
 # dev.off()
 # log_msg("Saved linear methylation comparison plot to ", plot_file)
 
-infile <- file.path(outdir, sig_outfile)
+infile <- file.path(outdir, basename(sig_outfile))
 heatmap_file <- file.path(outdir, "test_heatmap.png")
 
 if (!file.exists(infile)) {
@@ -818,14 +824,10 @@ p_down <- ggplot(top_down, aes(x = -log10(p_value), y = term_name)) +
 print(p_up)
 print(p_down)
 }
-
-library(dplyr)
-library(tidyr)
-library(gprofiler2)
-library(ggplot2)
+dev.off()
 
 # Input file (use dynamic sample names - this is a fallback block for manual testing)
-infile <- paste0("sig_methylation_clusters_", sample_a_name, "_vs_", sample_b_name, ".tsv")
+infile <- file.path(outdir, paste0("sig_methylation_clusters_", sample_a_name, "_vs_", sample_b_name, ".tsv"))
 
 # Read data
 df <- read.delim(infile, header = TRUE, stringsAsFactors = FALSE)
@@ -854,7 +856,6 @@ res_neg <- gost(query = genes_delta_neg,
                 sources = c("GO:BP", "KEGG", "REAC"),
                 correction_method = "fdr",
                 significant = FALSE)
-
 
 
 # Extract enrichment results without 'intersection'
@@ -919,20 +920,15 @@ names(res_neg$result)
 
 ####
 
-if (FALSE) {
-  library(dplyr)
-  library(tidyr)
-  library(gprofiler2)
-  library(ggplot2)
-
-  # File path (use dynamic sample names)
-  infile <- paste0("sig_methylation_clusters_", sample_a_name, "_vs_", sample_b_name, ".tsv")
+# File path (use dynamic sample names)
+infile <- file.path(outdir, paste0("sig_methylation_clusters_", sample_a_name, "_vs_", sample_b_name, ".tsv"))
 
 # Read data
 df <- read.delim(infile, header = TRUE, stringsAsFactors = FALSE)
 
 # Filter for strong differential methylation (|mean_delta| >= 30)
-df_filtered <- df %>% filter(abs(mean_delta) >= 30)
+#df_filtered <- df %>% filter(abs(mean_delta) >= 30)
+df_filtered <- df
 
 # Genes with higher methylation in Sample1 (positive delta)
 genes_delta_pos <- unique(df_filtered$gene[df_filtered$mean_delta > 0])
@@ -958,30 +954,39 @@ res_neg <- gost(query = genes_delta_neg,
 
 # Extract enrichment results explicitly (pipe-free)
 if (!is.null(res_pos$result) && nrow(res_pos$result) > 0) {
-  df_pos <- dplyr::select(res_pos$result, term_id, term_name, source, p_value, intersection) 
-  df_pos$sample <- "Higher methylation in Sample1"
-} else {
-  df_pos <- data.frame()
-}
+    df_pos <- res_pos$result %>%
+      dplyr::select(term_id, term_name, source, p_value, dplyr::any_of("intersection"))
+    if (!"intersection" %in% colnames(df_pos)) df_pos$intersection <- NA_character_
+    df_pos$sample <- "Higher methylation in Sample1"
+  } else {
+    df_pos <- data.frame(term_id=character(), term_name=character(), source=character(), p_value=numeric(), intersection=character(), sample=character(), stringsAsFactors = FALSE)
+  }
 
 if (!is.null(res_neg$result) && nrow(res_neg$result) > 0) {
-  df_neg <- dplyr::select(res_neg$result, term_id, term_name, source, p_value, intersection)
-  df_neg$sample <- "Higher methylation in Sample2"
-} else {
-  df_neg <- data.frame()
+    df_neg <- res_neg$result %>%
+      dplyr::select(term_id, term_name, source, p_value, dplyr::any_of("intersection"))
+    if (!"intersection" %in% colnames(df_neg)) df_neg$intersection <- NA_character_
+    df_neg$sample <- "Higher methylation in Sample2"
+  } else {
+    df_neg <- data.frame(term_id=character(), term_name=character(), source=character(), p_value=numeric(), intersection=character(), sample=character(), stringsAsFactors = FALSE)
 }
-
+    
 # Function to compute mean_delta per pathway from intersected genes
 compute_mean_delta <- function(df_enrich, df_input) {
   if (nrow(df_enrich) == 0) return(df_enrich)
-  
+
   df_enrich$mean_delta_pathway <- NA_real_
-  
+
   for (i in seq_len(nrow(df_enrich))) {
-    genes_in_pathway <- unlist(strsplit(df_enrich$intersection[i], ","))
+    intersection_value <- df_enrich$intersection[i]
+    if (is.na(intersection_value) || intersection_value == "") next
+
+    genes_in_pathway <- unlist(strsplit(intersection_value, ","))
+    genes_in_pathway <- trimws(genes_in_pathway)
+    if (length(genes_in_pathway) == 0) next
+
     deltas <- df_input$mean_delta[df_input$gene %in% genes_in_pathway]
     if (length(deltas) > 0) {
-      # Calculate mean delta (mean of gene mean_deltas for that pathway)
       df_enrich$mean_delta_pathway[i] <- mean(deltas, na.rm=TRUE)
     }
   }
@@ -1033,6 +1038,8 @@ top_terms <- combined %>%
 plot_df <- plot_df %>% filter(term_id %in% top_terms)
 
 # Plot
+dev.off()
+
 ggplot(plot_df, aes(x = mean_delta_pathway, y = reorder(term_name, abs(mean_delta_pathway)),
                     color = sample, size = logp)) +
   geom_point(alpha = 0.8) +
