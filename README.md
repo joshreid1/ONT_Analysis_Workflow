@@ -192,7 +192,7 @@ Output files are prefixed with `<sample_name>`. Each subworkflow produces distin
 | `--sv` | [Sniffles2](https://github.com/fritzsedlazeck/Sniffles) | `<sample>.wf_sv.vcf.gz`<br>`<sample>.wf_sv.snf`<br>`<sample>.wf-human-sv-report.html` | Structural variants (DEL, INS, DUP, INV, BND); `.snf` enables multi-sample SV calling |
 | `--str` | [Straglr](https://github.com/bcgsc/straglr) | `<sample>.wf_str.vcf.gz`<br>`<sample>.wf_str.tsv`<br>`<sample>.haplotagged.cram`<br>`<sample>.wf-human-str-report.html` | STR expansion genotypes; TSV contains read-level spanning information; haplotagged CRAM for downstream use. **hg38 only.** Automatically enables `--snp`. |
 | `--cnv` | [Spectre](https://github.com/nanoporetech/ont-spectre) | `<sample>.wf_cnv.vcf.gz`<br>`<sample>.wf-human-cnv-report.html` | Large CNVs (>100kb), annotated with SnpEff; includes sex chromosome karyotype prediction. Use `--cnv --use_qdnaseq` for shallow WGS or adaptive sampling. |
-| `--mod` | [modkit](https://github.com/nanoporetech/modkit) | `<sample>.wf_mods.bedmethyl.gz`<br>`<sample>.wf_mods.1.bedmethyl.gz`<br>`<sample>.wf_mods.2.bedmethyl.gz`<br>`<sample>.wf_mods.5mC.bw` | Aggregated CpG methylation counts (bedMethyl format); per-haplotype methylation when used with `--phased`; bigWig for genome browser visualisation |
+| `--mod` | [modkit](https://github.com/nanoporetech/modkit) | `<sample>.wf_mods.1.bedmethyl.gz`<br>`<sample>.wf_mods.2.bedmethyl.gz`<br>`<sample>.wf_mods.ungrouped.bedmethyl.gz` | Aggregated CpG methylation counts (bedMethyl format); per-haplotype methylation when used with `--phased`; bigWig for genome browser visualisation |
 | `--phased` | [WhatsHap](https://github.com/whatshap/whatshap) | `<sample>.haplotagged.cram`<br>Phased SNP + SV VCFs | Haplotagged BAM/CRAM with HP and PS tags; phased VCFs for SNPs and SVs |
 
 **Additional outputs (all runs):**
@@ -200,11 +200,23 @@ Output files are prefixed with `<sample_name>`. Each subworkflow produces distin
 - `<sample>.wf-human-alignment-report.html` — Alignment QC summary
 - `<sample>.mosdepth.summary.txt` — Mean coverage per chromosome
 - `<sample>.regions.bed.gz` — Mean coverage per region (BED)
-- `<sample>.haplocheck.tsv` — Mitochondrial contamination estimate
 - `<sample>.stats.json` — Base statistics (reads, mappings, SNPs, SVs)
 
-<!-- TODO: Add notes on recommended downstream tools/scripts for interpreting each output type (e.g. filtering VCFs, visualising bedMethyl, working with STR TSV) -->
-<!-- TODO: Document multi-sample SV calling workflow using .snf files from Sniffles2 -->
+---
+
+#Running nf-cavalier on ONT data
+
+- Currently only tested on singletons (as samples are not joint called). Merging multiple SNV VCFs and SV VCFs from different samples is possible but not yet tested.
+- CRAM input accepted in current dev branch
+- Add the parameters below for ONT samples:
+
+```bash
+    --short_vcf = '/path/to/sample.wf_snp.vcf.gz'
+    --struc_vcf = '/path/to/sample.wf_sv.vcf.gz'
+    
+    --struc_fill_tags = true
+    --short_fill_tags = true 
+```
 
 ---
 
@@ -243,12 +255,17 @@ Load CpG island annotations:
 **File → Load track from URL →** `https://data.broadinstitute.org/igvdata/annotations/hg38/cpgIslandExt.bed.gz`
 
 Example methylation analysis scripts are available in the `methylation_scripts/` directory of this repo. These include:
-- `methylation_compare.R`: Compare methylation profiles between two samples, including pathway enrichment analysis of differentially methylated genes.
+- `methylation_compare.R`: Compare methylation profiles between two samples (used for comparing twin pairs), including pathway enrichment analysis of differentially methylated genes.
+- Tested on modkit output with "traditional" preset
 
-
+```bash
+$ modkit pileup $input_bam $output_bed --ref $ref
+  --modified-bases 5mC 5hmC \ 
+  --combine-mods \ #Combine all modified bases into a single "modified" category for downstream analysis (e.g. DMR calling)
+  --combine-strands --cpg
+```
 
 > **IGV tip:** Enable "Hide Small Indels" (e.g. <5bp) to reduce noise in screenshots.
-
 
 ---
 
@@ -301,16 +318,6 @@ If the basecall model cannot be detected from BAM headers, provide it explicitly
 ```bash
 --override_basecaller_cfg dna_r10.4.1_e8.2_400bps_sup@v5.0.0
 ```
-
-### STR subworkflow fails
-
-- Ensure you are using **hg38/GRCh38** — CHM13 is not supported for `--str`
-- The STR subworkflow automatically enables `--snp`; both must be able to run
-- Provide `--sex XX` or `--sex XY` to avoid incorrect chrX genotyping
-
-<!-- TODO: Add troubleshooting for Dorado resume-from behaviour on interrupted GPU jobs -->
-<!-- TODO: Document known WEHI HPC-specific issues (e.g. SLURM GPU partition availability, module versions) -->
-
 ---
 
 ## 📚 References
